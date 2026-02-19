@@ -11,7 +11,7 @@ export default function MainDashboard() {
 
   return (
     <div className='container mx-auto p-6'>
-      <h1 className='text-3xl font-bold mb-6'>MarkMate Dashboard</h1>
+      <h1 className='text-3xl font-bold mb-6'>UniResolve Dashboard</h1>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className='grid w-full grid-cols-3'>

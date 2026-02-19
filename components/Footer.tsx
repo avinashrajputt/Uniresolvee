@@ -9,7 +9,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#6d5df6] to-[#3b82f6] flex items-center justify-center font-bold">AI</div>
               <div>
-                <div className="font-semibold text-lg">ScoreCheck</div>
+                <div className="font-semibold text-lg">UniResolve</div>
                 <div className="text-sm text-muted">AI-powered assessment for universities</div>
               </div>
             </div>
@@ -37,7 +37,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-[#0b1420]/40 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-muted">© {new Date().getFullYear()} ScoreCheck — All rights reserved.</div>
+          <div className="text-sm text-muted">© {new Date().getFullYear()} UniResolve — All rights reserved.</div>
           <div className="flex items-center gap-4">
             <a href="#" className="text-sm text-muted hover:text-white">LinkedIn</a>
             <a href="#" className="text-sm text-muted hover:text-white">Twitter</a>
