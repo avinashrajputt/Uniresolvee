@@ -6,8 +6,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { SessionProvider } from 'next-auth/react';
 import { SessionProviderWrapper } from '@/components/providers/sessionProvider';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import ConditionalLayout from '@/components/ConditionalLayout';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -47,9 +46,9 @@ export default function RootLayout({
         >
             <main>
               <SessionProviderWrapper>
-                <Navbar />
-                <div className="pt-20">{children}</div>
-                <Footer />
+                <ConditionalLayout>
+                  {children}
+                </ConditionalLayout>
               </SessionProviderWrapper>
             </main>
           <Toaster />

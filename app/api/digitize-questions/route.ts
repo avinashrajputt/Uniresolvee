@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { PrismaClient } from '@/lib/generated/prisma';
-
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
 export async function POST(request: NextRequest) {

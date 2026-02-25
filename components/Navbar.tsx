@@ -1,40 +1,117 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { GraduationCap, Menu, X } from 'lucide-react';
 // ThemeToggle removed per request (hidden)
 
-export default function Navbar() {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+const Navbar = React.memo(function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  // Throttle scroll events for better performance
+  const handleScroll = useCallback(() => {
+    const sections = ['home', 'universities', 'partners', 'features', 'contact'];
+    const scrollPosition = window.scrollY + 100;
+
+    for (const section of sections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const offsetTop = element.offsetTop;
+        const offsetBottom = offsetTop + element.offsetHeight;
+        if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+          setActiveSection(section);
+          break;
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    let throttleTimer: NodeJS.Timeout;
+    const throttledScroll = () => {
+      if (throttleTimer) return;
+      throttleTimer = setTimeout(() => {
+        handleScroll();
+        throttleTimer = null as any;
+      }, 100);
+    };
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', throttledScroll);
+      if (throttleTimer) clearTimeout(throttleTimer);
+    };
+  }, [handleScroll]);
+
+  const scrollToSection = useCallback((sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setMobileOpen(false);
+  }, []);
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#071026]/95 backdrop-blur-md border-b border-[#0f1724]/50">
-        <div className="w-full px-22 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-linear-to-br from-[#6d5df6] to-[#3b82f6] flex items-center justify-center text-white font-bold">UR</div>
-              <div className="text-white font-semibold text-lg">UniResolve</div>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0f1729]/95 backdrop-blur-xl border-b border-purple-500/10">
+        <div className="w-full px-6 lg:px-12 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/40 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-purple-500/50">
+                <GraduationCap className="h-5 w-5" />
+              </div>
+              <div className="text-white font-semibold text-xl tracking-tight">UniResolve</div>
             </Link>
 
-            <div className="hidden md:flex gap-6 items-center text-white/80">
-              <a href="#home" className="text-sm hover:text-white">Home</a>
-              <a href="#universities" className="text-sm hover:text-white">Universities</a>
-              <a href="#partners" className="text-sm hover:text-white">Partners</a>
-            <a href="#features" className="text-sm hover:text-white">Features</a>
-              <a href="#contact" className="text-sm hover:text-white">Contact</a>
+            <div className="hidden md:flex gap-1 items-center">
+              {[
+                { id: 'home', label: 'Home' },
+                { id: 'universities', label: 'Universities' },
+                { id: 'partners', label: 'Partners' },
+                { id: 'features', label: 'Features' },
+                { id: 'contact', label: 'Contact' }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    activeSection === item.id
+                      ? 'text-white bg-purple-600/20'
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-3">
-              <Link href="/auth/login" className="px-3 py-1.5 border border-white/20 text-white rounded">Login</Link>
-              <Link href="/auth/signup" className="px-3 py-1.5 bg-[#2563eb] hover:bg-[#1e50c8] text-white rounded">Sign Up</Link>
+              <Link 
+                href="/auth/login" 
+                className="px-5 py-2 border border-purple-400/30 text-white rounded-lg text-sm font-medium hover:bg-purple-500/10 hover:border-purple-400/50 transition-all duration-200"
+              >
+                Login
+              </Link>
+              <Link 
+                href="/auth/signup" 
+                className="px-5 py-2 bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white rounded-lg text-sm font-semibold transition-all duration-200 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40"
+              >
+                Sign Up
+              </Link>
             </div>
-            <button className="sm:hidden p-2 rounded-md border border-white/10 text-white" onClick={() => setMobileOpen((s) => !s)} aria-label="Toggle menu">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+            <button 
+              className="md:hidden p-2 rounded-lg border border-purple-400/30 text-white hover:bg-purple-500/10 transition-all duration-200" 
+              onClick={() => setMobileOpen((s) => !s)} 
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -42,23 +119,50 @@ export default function Navbar() {
 
       {/* mobile menu */}
       {mobileOpen && (
-        <div className="sm:hidden fixed top-16 left-0 right-0 z-40 bg-[#071026]/98 backdrop-blur p-4">
-          <div className="flex flex-col gap-3 text-white">
-            <a href="#home" className="py-2">Home</a>
-            <a href="#features" className="py-2">Features</a>
-            <a href="#universities" className="py-2">Universities</a>
-            <a href="#partners" className="py-2">Partners</a>
-            <a href="#contact" className="py-2">Contact</a>
-            <div className="flex gap-2 mt-2">
-              <Link href="/auth/login" className="flex-1 px-3 py-2 border border-white/20 rounded text-center">Login</Link>
-              <Link href="/auth/signup" className="flex-1 px-3 py-2 bg-[#2563eb] text-white rounded text-center">Sign Up</Link>
+        <div className="md:hidden fixed top-[68px] left-0 right-0 z-40 bg-[#0f1729]/98 backdrop-blur-xl border-b border-purple-500/10 shadow-xl">
+          <div className="px-6 py-6 space-y-2">
+            {[
+              { id: 'home', label: 'Home' },
+              { id: 'universities', label: 'Universities' },
+              { id: 'partners', label: 'Partners' },
+              { id: 'features', label: 'Features' },
+              { id: 'contact', label: 'Contact' }
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`w-full text-left py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
+                  activeSection === item.id
+                    ? 'text-white bg-purple-600/20'
+                    : 'text-gray-300 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <div className="flex gap-3 pt-4 mt-4 border-t border-white/10">
+              <Link 
+                href="/auth/login" 
+                onClick={() => setMobileOpen(false)}
+                className="flex-1 px-4 py-3 border border-purple-400/30 text-white rounded-lg text-center text-sm font-medium hover:bg-purple-500/10 transition-all duration-200"
+              >
+                Login
+              </Link>
+              <Link 
+                href="/auth/signup" 
+                onClick={() => setMobileOpen(false)}
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 text-white rounded-lg text-center text-sm font-semibold shadow-lg shadow-purple-500/30 transition-all duration-200"
+              >
+                Sign Up
+              </Link>
             </div>
           </div>
         </div>
       )}
 
-      <div style={{ height: 72, background: '#071026' }} />
-
+      {/* Spacer no longer needed due to ConditionalLayout handling */}
     </>
   );
-}
+});
+
+export default Navbar;

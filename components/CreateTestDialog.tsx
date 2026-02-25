@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Upload, Image, Loader2 } from 'lucide-react';
+import { Plus, Trash2, Upload, Image, Loader2, FileText, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -30,6 +30,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
 
 interface Question {
   text: string;
@@ -256,53 +257,73 @@ export function CreateTestDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='max-w-6xl max-h-[90vh] overflow-y-auto'>
-        <DialogHeader>
-          <DialogTitle>Create New Test</DialogTitle>
-          <DialogDescription>
-            Create a new test for your batch. You can add questions manually or
-            upload an image to digitize them.
-          </DialogDescription>
+      <DialogContent className='max-w-6xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 border-2 border-indigo-500/20'>
+        <DialogHeader className='space-y-3 pb-4 border-b border-gray-200 dark:border-gray-700'>
+          <div className='flex items-center gap-3'>
+            <div className='h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg'>
+              <FileText className='h-6 w-6 text-white' />
+            </div>
+            <div>
+              <DialogTitle className='text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent'>
+                Create New Test
+              </DialogTitle>
+              <DialogDescription className='text-base mt-1'>
+                Create a new test for your batch. Add questions manually or upload an image to digitize them with AI.
+              </DialogDescription>
+            </div>
+          </div>
         </DialogHeader>
 
         {error && (
-          <Alert variant='destructive'>
-            <AlertDescription>{error}</AlertDescription>
+          <Alert variant='destructive' className='border-2 border-red-500/50 bg-red-50 dark:bg-red-900/20'>
+            <AlertCircle className='h-5 w-5' />
+            <AlertDescription className='font-medium'>{error}</AlertDescription>
           </Alert>
         )}
 
         <form onSubmit={handleSubmit} className='space-y-6'>
           {/* Test Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-lg'>Test Information</CardTitle>
+          <Card className='border-0 shadow-xl bg-white dark:bg-gray-800/50'>
+            <CardHeader className='border-b bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20'>
+              <div className='flex items-center gap-2'>
+                <div className='h-2 w-2 rounded-full bg-indigo-500'></div>
+                <CardTitle className='text-xl font-bold text-gray-900 dark:text-gray-100'>Test Information</CardTitle>
+              </div>
             </CardHeader>
-            <CardContent className='space-y-4'>
-              <div className='grid grid-cols-2 gap-4'>
-                <div>
-                  <Label htmlFor='testName'>Test Name</Label>
+            <CardContent className='space-y-5 pt-6'>
+              <div className='grid grid-cols-2 gap-6'>
+                <div className='space-y-2'>
+                  <Label htmlFor='testName' className='text-sm font-semibold text-gray-700 dark:text-gray-300'>
+                    Test Name <span className='text-red-500'>*</span>
+                  </Label>
                   <Input
                     id='testName'
                     value={testName}
                     onChange={(e) => setTestName(e.target.value)}
                     placeholder='e.g., Mid-term Exam'
                     required
+                    className='h-11 border-2 focus:border-indigo-500 focus:ring-indigo-500'
                   />
                 </div>
-                <div>
-                  <Label htmlFor='batch'>Select Batch</Label>
+                <div className='space-y-2'>
+                  <Label htmlFor='batch' className='text-sm font-semibold text-gray-700 dark:text-gray-300'>
+                    Select Batch <span className='text-red-500'>*</span>
+                  </Label>
                   <Select
                     value={selectedBatchId}
                     onValueChange={setSelectedBatchId}
                     required
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className='h-11 border-2 focus:border-indigo-500'>
                       <SelectValue placeholder='Choose a batch' />
                     </SelectTrigger>
                     <SelectContent>
                       {batchesLoading ? (
                         <SelectItem value='loading' disabled>
-                          Loading...
+                          <div className='flex items-center gap-2'>
+                            <Loader2 className='h-4 w-4 animate-spin' />
+                            Loading batches...
+                          </div>
                         </SelectItem>
                       ) : batches.length === 0 ? (
                         <SelectItem value='no-batches' disabled>
@@ -311,8 +332,12 @@ export function CreateTestDialog({
                       ) : (
                         batches.map((batch) => (
                           <SelectItem key={batch.id} value={batch.id}>
-                            {batch.name} ({batch._count?.students || 0}{' '}
-                            students)
+                            <div className='flex items-center justify-between w-full'>
+                              <span>{batch.name}</span>
+                              <Badge variant='secondary' className='ml-2'>
+                                {batch._count?.students || 0} students
+                              </Badge>
+                            </div>
                           </SelectItem>
                         ))
                       )}
@@ -320,58 +345,70 @@ export function CreateTestDialog({
                   </Select>
                 </div>
               </div>
-              <div>
-                <Label htmlFor='description'>Description</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='description' className='text-sm font-semibold text-gray-700 dark:text-gray-300'>
+                  Description
+                </Label>
                 <Textarea
                   id='description'
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder='Brief description of the test'
                   rows={3}
+                  className='border-2 focus:border-indigo-500 resize-none'
                 />
               </div>
-              <div className='flex items-center space-x-2'>
-                <Switch
-                  id='active'
-                  checked={isActive}
-                  onCheckedChange={setIsActive}
-                />
-                <Label htmlFor='active'>Make test active immediately</Label>
-              </div>
-              <div className='text-sm text-muted-foreground'>
-                Maximum Marks:{' '}
-                <span className='font-semibold'>{calculateMaxMarks()}</span>
+              <div className='flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800'>
+                <div className='flex items-center space-x-3'>
+                  <Switch
+                    id='active'
+                    checked={isActive}
+                    onCheckedChange={setIsActive}
+                    className='data-[state=checked]:bg-indigo-600'
+                  />
+                  <Label htmlFor='active' className='font-medium cursor-pointer'>
+                    Make test active immediately
+                  </Label>
+                </div>
+                <Badge variant='outline' className='bg-white dark:bg-gray-800 px-4 py-1.5'>
+                  Max Marks: <span className='font-bold text-indigo-600 ml-1'>{calculateMaxMarks()}</span>
+                </Badge>
               </div>
             </CardContent>
           </Card>
 
           {/* Image Upload for Question Digitization */}
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-lg'>Upload Question Sheet</CardTitle>
-              <CardDescription>
-                Upload an image of your question paper to automatically extract
-                questions using AI
+          <Card className='border-0 shadow-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20'>
+            <CardHeader className='border-b border-purple-200 dark:border-purple-800'>
+              <div className='flex items-center gap-2'>
+                <Sparkles className='h-5 w-5 text-purple-600 dark:text-purple-400' />
+                <CardTitle className='text-xl font-bold text-gray-900 dark:text-gray-100'>
+                  Upload Question Sheet
+                </CardTitle>
+              </div>
+              <CardDescription className='text-base mt-2'>
+                Upload an image of your question paper to automatically extract questions using AI
               </CardDescription>
             </CardHeader>
-            <CardContent className='space-y-4'>
+            <CardContent className='space-y-4 pt-6'>
               <div className='flex items-center gap-4'>
                 <Button
                   type='button'
-                  variant='outline'
+                  size='lg'
                   disabled={imageUploading}
                   onClick={() =>
                     document.getElementById('imageUpload')?.click()
                   }
+                  className='bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-200'
                 >
                   {imageUploading ? (
                     <>
-                      <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                      Processing...
+                      <Loader2 className='mr-2 h-5 w-5 animate-spin' />
+                      Processing with AI...
                     </>
                   ) : (
                     <>
-                      <Upload className='mr-2 h-4 w-4' />
+                      <Upload className='mr-2 h-5 w-5' />
                       Upload Image
                     </>
                   )}
@@ -384,66 +421,82 @@ export function CreateTestDialog({
                   className='hidden'
                 />
                 {uploadedImage && (
-                  <div className='flex items-center gap-2 text-sm text-green-600'>
-                    <Image className='h-4 w-4' />
-                    Image processed successfully
+                  <div className='flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900/30 rounded-lg border border-green-300 dark:border-green-800'>
+                    <CheckCircle2 className='h-5 w-5 text-green-600 dark:text-green-400' />
+                    <span className='text-sm font-semibold text-green-700 dark:text-green-300'>
+                      Image processed successfully
+                    </span>
                   </div>
                 )}
               </div>
               {uploadedImage && (
-                <div className='mt-4'>
+                <div className='mt-4 p-4 bg-white dark:bg-gray-800 rounded-xl border-2 border-purple-200 dark:border-purple-800 shadow-inner'>
                   <img
                     src={uploadedImage}
                     alt='Uploaded question sheet'
-                    className='max-w-full h-32 object-contain border rounded'
+                    className='max-w-full h-40 object-contain mx-auto rounded-lg'
                   />
                 </div>
               )}
             </CardContent>
           </Card>
 
-          <Separator />
+          <Separator className='my-8' />
 
           {/* Questions */}
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between'>
+          <Card className='border-0 shadow-xl bg-white dark:bg-gray-800/50'>
+            <CardHeader className='flex flex-row items-center justify-between border-b bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20'>
               <div>
-                <CardTitle className='text-lg'>Questions</CardTitle>
-                <CardDescription>
+                <div className='flex items-center gap-2'>
+                  <div className='h-2 w-2 rounded-full bg-green-500'></div>
+                  <CardTitle className='text-xl font-bold text-gray-900 dark:text-gray-100'>Questions</CardTitle>
+                </div>
+                <CardDescription className='mt-2 text-base'>
                   Add questions manually or use the image upload above
                 </CardDescription>
               </div>
               <Button
                 type='button'
                 onClick={addQuestion}
-                variant='outline'
-                size='sm'
+                size='lg'
+                className='bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200'
               >
-                <Plus className='mr-2 h-4 w-4' />
+                <Plus className='mr-2 h-5 w-5' />
                 Add Question
               </Button>
             </CardHeader>
-            <CardContent>
+            <CardContent className='pt-6'>
               <div className='space-y-6'>
                 {questions.map((question, index) => (
-                  <div key={index} className='border rounded-lg p-4'>
+                  <div 
+                    key={index} 
+                    className='border-2 border-gray-200 dark:border-gray-700 rounded-xl p-5 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 hover:shadow-lg'
+                  >
                     <div className='flex justify-between items-start mb-4'>
-                      <h4 className='font-medium'>Question {index + 1}</h4>
+                      <div className='flex items-center gap-3'>
+                        <div className='h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold shadow-md'>
+                          {index + 1}
+                        </div>
+                        <h4 className='font-bold text-lg text-gray-900 dark:text-gray-100'>
+                          Question {index + 1}
+                        </h4>
+                      </div>
                       {questions.length > 1 && (
                         <Button
                           type='button'
                           variant='outline'
                           size='icon'
                           onClick={() => removeQuestion(index)}
+                          className='border-2 border-red-300 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-400'
                         >
                           <Trash2 className='h-4 w-4' />
                         </Button>
                       )}
                     </div>
-                    <div className='grid grid-cols-1 gap-4'>
-                      <div>
-                        <Label htmlFor={`question-${index}`}>
-                          Question Text
+                    <div className='grid grid-cols-1 gap-5'>
+                      <div className='space-y-2'>
+                        <Label htmlFor={`question-${index}`} className='text-sm font-semibold text-gray-700 dark:text-gray-300'>
+                          Question Text <span className='text-red-500'>*</span>
                         </Label>
                         <Textarea
                           id={`question-${index}`}
@@ -454,11 +507,14 @@ export function CreateTestDialog({
                           placeholder='Enter the question...'
                           rows={3}
                           required
+                          className='border-2 focus:border-indigo-500 resize-none'
                         />
                       </div>
                       <div className='grid grid-cols-2 gap-4'>
-                        <div>
-                          <Label htmlFor={`marks-${index}`}>Marks</Label>
+                        <div className='space-y-2'>
+                          <Label htmlFor={`marks-${index}`} className='text-sm font-semibold text-gray-700 dark:text-gray-300'>
+                            Marks <span className='text-red-500'>*</span>
+                          </Label>
                           <Input
                             id={`marks-${index}`}
                             type='number'
@@ -473,10 +529,11 @@ export function CreateTestDialog({
                             }
                             placeholder='0'
                             required
+                            className='h-11 border-2 focus:border-indigo-500'
                           />
                         </div>
-                        <div>
-                          <Label htmlFor={`order-${index}`}>
+                        <div className='space-y-2'>
+                          <Label htmlFor={`order-${index}`} className='text-sm font-semibold text-gray-700 dark:text-gray-300'>
                             AI Order/Hint
                           </Label>
                           <Input
@@ -490,27 +547,56 @@ export function CreateTestDialog({
                               )
                             }
                             placeholder='e.g., Q1, Part A'
+                            className='h-11 border-2 focus:border-indigo-500'
                           />
                         </div>
                       </div>
                     </div>
                   </div>
                 ))}
+                
+                {questions.length === 0 && (
+                  <div className='text-center py-12'>
+                    <div className='w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-full flex items-center justify-center mx-auto mb-4'>
+                      <FileText className='h-10 w-10 text-gray-400' />
+                    </div>
+                    <p className='text-gray-600 dark:text-gray-400'>
+                      No questions added yet. Click "Add Question" to get started.
+                    </p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
 
           {/* Submit */}
-          <div className='flex justify-end space-x-4'>
+          <div className='flex justify-end space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700'>
             <Button
               type='button'
               variant='outline'
+              size='lg'
               onClick={() => onOpenChange(false)}
+              className='px-8 border-2 hover:bg-gray-100 dark:hover:bg-gray-800'
             >
               Cancel
             </Button>
-            <Button type='submit' disabled={loading || batchesLoading}>
-              {loading ? 'Creating...' : 'Create Test'}
+            <Button 
+              type='submit' 
+              size='lg' 
+              disabled={loading || batchesLoading}
+              className='px-8 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200'
+            >
+              {loading ? (
+                <>
+                  <Loader2 className='mr-2 h-5 w-5 animate-spin' />
+                  Creating Test...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className='mr-2 h-5 w-5' />
+                  Create Test
+                </>
+              )}
             </Button>
           </div>
         </form>

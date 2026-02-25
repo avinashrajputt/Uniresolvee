@@ -46,14 +46,14 @@
 
 :root {
   --radius: 0.625rem;
-  --color-primary: #2B2F8A; /* Deep Indigo */
-  --color-accent: #08A090; /* Teal */
-  --color-accent-2: #FFB86B; /* Warm Orange */
+  --color-primary: #7c3aed; /* Purple */
+  --color-accent: #6366f1; /* Indigo */
+  --color-accent-2: #a855f7; /* Purple Accent */
   --background-light: #F6F7FB;
-  --background-dark: #0b1220;
+  --background-dark: #071026;
   --foreground-dark: #e6eef6;
   --muted: #97a0b4;
-  --card-dark: #0f1724;
+  --card-dark: #0f1729;
 
   /* legacy tokens used by components - map to new palette */
   --background: var(--background-light);

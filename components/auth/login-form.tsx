@@ -38,7 +38,7 @@ export function LoginForm({
               required
               className={cn(
                 'bg-white/5 border-white/10 text-white placeholder:text-gray-400 h-12 px-4 rounded-lg',
-                'focus:bg-white/10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20',
+                'focus:bg-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20',
                 'transition-all duration-200',
                 errors.email && 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
               )}
@@ -64,7 +64,7 @@ export function LoginForm({
               required
               className={cn(
                 'bg-white/5 border-white/10 text-white placeholder:text-gray-400 h-12 px-4 rounded-lg',
-                'focus:bg-white/10 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20',
+                'focus:bg-white/10 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20',
                 'transition-all duration-200',
                 errors.password && 'border-red-500 focus:border-red-500 focus:ring-red-500/20'
               )}
@@ -82,7 +82,7 @@ export function LoginForm({
           )}
           <Button 
             type='submit' 
-            className='w-full h-12 bg-gradient-to-r from-[#6d5df6] to-[#3b82f6] hover:from-[#5d4de6] hover:to-[#2b72e6] text-white font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-blue-500/20' 
+            className='w-full h-12 bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-purple-500/30' 
             disabled={isLoading}
           >
             {isLoading ? (
@@ -119,7 +119,7 @@ export function LoginForm({
         </Button>
         <div className='text-center text-sm text-gray-400'>
           Don&apos;t have an account?{' '}
-          <a href='/auth/signup' className='text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors'>
+          <a href='/auth/signup' className='text-purple-400 hover:text-purple-300 underline underline-offset-4 transition-colors'>
             Sign up
           </a>
         </div>

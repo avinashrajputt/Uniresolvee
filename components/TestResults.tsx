@@ -192,18 +192,23 @@ export default function TestResults() {
   if (loading) {
     return (
       <div className='flex items-center justify-center h-64'>
-        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-primary'></div>
+        <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600'></div>
       </div>
     );
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-6 py-6'>
       {/* Header */}
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between mb-8'>
         <div>
-          <h1 className='text-3xl font-bold tracking-tight'>Test Results</h1>
-          <p className='text-muted-foreground'>
+          <div className='flex items-center gap-3 mb-2'>
+            <div className='h-10 w-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/30'>
+              <Trophy className='h-5 w-5 text-white' />
+            </div>
+            <h1 className='text-4xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent'>Test Results</h1>
+          </div>
+          <p className='text-gray-400 ml-13'>
             View and analyze student performance across all tests
           </p>
         </div>
@@ -214,6 +219,7 @@ export default function TestResults() {
             disabled={
               !Array.isArray(filteredResults) || filteredResults.length === 0
             }
+            className='bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-purple-500/50'
           >
             <Download className='mr-2 h-4 w-4' />
             Export CSV
@@ -222,19 +228,19 @@ export default function TestResults() {
       </div>
 
       {error && (
-        <Card className='border-destructive'>
+        <Card className='border-2 border-red-500/30 bg-red-500/10'>
           <CardContent className='pt-6'>
-            <p className='text-destructive'>{error}</p>
+            <p className='text-red-400'>{error}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Test Filter */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Filter Results</CardTitle>
+      <Card className='border-0 shadow-xl bg-white/5 backdrop-blur-sm'>
+        <CardHeader className='border-b bg-gradient-to-r from-purple-50/5 to-indigo-50/5'>
+          <CardTitle className='text-white'>Filter Results</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className='pt-6'>
           <div className='flex gap-4 items-center'>
             <div className='flex-1 max-w-xs'>
               <Select value={selectedTest} onValueChange={setSelectedTest}>
@@ -252,7 +258,7 @@ export default function TestResults() {
                 </SelectContent>
               </Select>
             </div>
-            <div className='text-sm text-muted-foreground'>
+            <div className='text-sm text-gray-400'>
               Showing{' '}
               {Array.isArray(filteredResults) ? filteredResults.length : 0}{' '}
               results
@@ -263,42 +269,42 @@ export default function TestResults() {
 
       {/* Stats Cards */}
       <div className='grid gap-4 md:grid-cols-4'>
-        <Card>
+        <Card className='border-0 shadow-lg bg-gradient-to-br from-blue-600/10 to-cyan-600/10 backdrop-blur-sm border border-blue-500/20'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Average Score</CardTitle>
-            <TrendingUp className='h-4 w-4 text-muted-foreground' />
+            <CardTitle className='text-sm font-medium text-white'>Average Score</CardTitle>
+            <TrendingUp className='h-5 w-5 text-blue-400' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{stats.avg.toFixed(1)}%</div>
+            <div className='text-3xl font-bold text-white'>{stats.avg.toFixed(1)}%</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className='border-0 shadow-lg bg-gradient-to-br from-green-600/10 to-emerald-600/10 backdrop-blur-sm border border-green-500/20'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Highest Score</CardTitle>
-            <Trophy className='h-4 w-4 text-muted-foreground' />
+            <CardTitle className='text-sm font-medium text-white'>Highest Score</CardTitle>
+            <Trophy className='h-5 w-5 text-green-400' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
+            <div className='text-3xl font-bold text-white'>
               {stats.highest.toFixed(1)}%
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className='border-0 shadow-lg bg-gradient-to-br from-orange-600/10 to-red-600/10 backdrop-blur-sm border border-orange-500/20'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Lowest Score</CardTitle>
-            <FileText className='h-4 w-4 text-muted-foreground' />
+            <CardTitle className='text-sm font-medium text-white'>Lowest Score</CardTitle>
+            <FileText className='h-5 w-5 text-orange-400' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{stats.lowest.toFixed(1)}%</div>
+            <div className='text-3xl font-bold text-white'>{stats.lowest.toFixed(1)}%</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className='border-0 shadow-lg bg-gradient-to-br from-purple-600/10 to-pink-600/10 backdrop-blur-sm border border-purple-500/20'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Pass Rate</CardTitle>
-            <Award className='h-4 w-4 text-muted-foreground' />
+            <CardTitle className='text-sm font-medium text-white'>Pass Rate</CardTitle>
+            <Award className='h-5 w-5 text-purple-400' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
+            <div className='text-3xl font-bold text-white'>
               {stats.passRate.toFixed(1)}%
             </div>
           </CardContent>
@@ -306,14 +312,14 @@ export default function TestResults() {
       </div>
 
       {/* Results Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Student Results</CardTitle>
-          <CardDescription>
+      <Card className='border-0 shadow-xl bg-white/5 backdrop-blur-sm'>
+        <CardHeader className='border-b bg-gradient-to-r from-purple-50/5 to-indigo-50/5'>
+          <CardTitle className='text-white'>Student Results</CardTitle>
+          <CardDescription className='text-gray-400'>
             Detailed results for all students and tests
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className='pt-6'>
           {!Array.isArray(filteredResults) || filteredResults.length === 0 ? (
             <div className='text-center py-8'>
               <FileText className='h-12 w-12 mx-auto mb-4 opacity-50' />
