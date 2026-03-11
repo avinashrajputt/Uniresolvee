@@ -3,19 +3,20 @@ import prisma from '@/lib/prisma';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id: testId } = await params;
     const body = await request.json();
     const { studentId, answers } = body;
 
     // Save final answers
     for (const answerData of answers) {
-      await prisma.answer.upsert({
+      await prisma.answer.upsert(
         where: {
           studentId_testId_questionId: {
             studentId,
-            testId: params.id,
+            testId,
             questionId: answerData.questionId,
           },
         },
@@ -25,7 +26,7 @@ export async function POST(
         },
         create: {
           studentId,
-          testId: params.id,
+          testId,
           questionId: answerData.questionId,
           answer: answerData.answer,
           marksScored: 0,

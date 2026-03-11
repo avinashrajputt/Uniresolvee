@@ -3,10 +3,10 @@ import prisma from '@/lib/prisma';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const batchId = params.id;
+    const { id: batchId } = await params;
     const body = await request.json();
     const { name, description, students } = body;
 
@@ -202,10 +202,10 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const batchId = params.id;
+    const { id: batchId } = await params;
 
     // Check if batch exists and has tests
     const existingBatch = await prisma.batch.findUnique({

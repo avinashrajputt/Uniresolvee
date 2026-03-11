@@ -3,13 +3,14 @@ import prisma from '@/lib/prisma';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string; studentId: string } }
+  { params }: { params: Promise<{ id: string; studentId: string }> }
 ) {
   try {
-    const answers = await prisma.answer.findMany({
+    const { id: testId, studentId } = await params;
+    const answers = await prisma.answer.findMany(
       where: {
-        testId: params.id,
-        studentId: params.studentId,
+        testId,
+        studentId,
       },
       include: {
         question: true,
