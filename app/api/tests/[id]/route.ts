@@ -10,7 +10,7 @@ export async function PATCH(
     const body = await request.json();
     const { active } = body;
 
-    const test = await prisma.test.update(
+    const test = await prisma.test.update({
       where: { id },
       data: { active },
       include: {

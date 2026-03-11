@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id: testId, studentId } = await params;
-    const answers = await prisma.answer.findMany(
+    const answers = await prisma.answer.findMany({
       where: {
         testId,
         studentId,

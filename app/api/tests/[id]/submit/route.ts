@@ -12,7 +12,7 @@ export async function POST(
 
     // Save final answers
     for (const answerData of answers) {
-      await prisma.answer.upsert(
+      await prisma.answer.upsert({
         where: {
           studentId_testId_questionId: {
             studentId,

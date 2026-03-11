@@ -7,7 +7,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const test = await prisma.test.findUnique(
+    const test = await prisma.test.findUnique({
       where: { id },
       include: {
         questions: true,
