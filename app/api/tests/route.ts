@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function GET() {
   try {
+    // Get the authenticated user
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please log in.' },
+        { status: 401 }
+      );
+    }
+
+    const userId = session.user.id;
+
     const tests = await prisma.test.findMany({
+      where: {
+        userId: userId,
+      },
       include: {
         batch: {
           select: {
@@ -23,7 +40,7 @@ export async function GET() {
       },
     });
 
-    console.log('Fetched tests:', tests.length); // Debug log
+    console.log('Fetched tests for user:', userId, 'Count:', tests.length);
     return NextResponse.json(tests);
   } catch (error) {
     console.error('Error fetching tests:', error);
@@ -36,6 +53,17 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Get the authenticated user
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please log in.' },
+        { status: 401 }
+      );
+    }
+
+    const userId = session.user.id;
     const body = await request.json();
     console.log('Creating test with data:', body);
 
@@ -61,25 +89,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get or create a user
-    let user = await prisma.user.findFirst();
+    // Verify user exists in the database
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
     if (!user) {
-      console.log('No user found, creating one...');
-      user = await prisma.user.create({
-        data: {
-          email: 'admin@markmate.com',
-          firstname: 'Admin',
-          lastname: 'User',
-          provider: 'credentials',
-        },
-      });
+      return NextResponse.json(
+        { error: 'User not found in database' },
+        { status: 404 }
+      );
     }
 
     // Verify batch exists and belongs to user
     const batch = await prisma.batch.findFirst({
       where: {
         id: batchId,
-        userId: user.id,
+        userId: userId,
       },
     });
 
@@ -96,7 +122,7 @@ export async function POST(request: NextRequest) {
       data: {
         name,
         description: description || '',
-        userId: user.id,
+        userId: userId,
         batchId,
         active: active || false,
         maximumMarks: maximumMarks || 0,

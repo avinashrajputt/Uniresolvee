@@ -34,7 +34,7 @@ const ContactSection = React.memo(function ContactSection() {
 	}, []);
 
 	return (
-		<section id="contact" className="w-full py-12 text-white bg-gradient-to-b from-[#071026] via-[#0a1435] to-[#071026] relative overflow-hidden">
+		<section id="contact" className="w-full py-12 text-gray-900 dark:text-white bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-[#071026] dark:via-[#0a1435] dark:to-[#071026] relative overflow-hidden">
 			{/* Background decorative elements */}
 			<div className="absolute top-10 left-10 w-64 h-64 bg-pink-600/10 rounded-full blur-3xl"></div>
 			<div className="absolute bottom-10 right-10 w-56 h-56 bg-indigo-600/10 rounded-full blur-3xl"></div>
@@ -42,17 +42,17 @@ const ContactSection = React.memo(function ContactSection() {
 			<div className="max-w-4xl mx-auto px-6 relative z-10">
 				<div className="text-center mb-10">
 					<div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-pink-600/20 to-purple-600/20 border border-pink-500/30 mb-6 backdrop-blur-sm">
-						<Mail className="h-4 w-4 text-pink-400" />
-						<span className="text-sm font-medium text-pink-300">Get in Touch</span>
+						<Mail className="h-4 w-4 text-pink-600 dark:text-pink-400" />
+						<span className="text-sm font-medium text-pink-700 dark:text-pink-300">Get in Touch</span>
 					</div>
 					
 					<h2 className="text-3xl md:text-4xl lg:text-4xl font-extrabold mb-3">
-						<span className="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Contact Us</span>
+						<span className="bg-gradient-to-r from-pink-600 to-purple-600 dark:from-pink-400 dark:to-purple-400 bg-clip-text text-transparent">Contact Us</span>
 					</h2>
-					<p className="text-base text-gray-300 max-w-2xl mx-auto">Have questions or want a demo? Send us a message and we will get back to you within 48 hours.</p>
+					<p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Have questions or want a demo? Send us a message and we will get back to you within 48 hours.</p>
 				</div>
 
-				<div className="relative rounded-2xl bg-gradient-to-br from-[#0b1220]/80 to-[#0f1a2b]/80 border-2 border-white/10 backdrop-blur-sm p-6 md:p-8 shadow-2xl">
+				<div className="relative rounded-2xl bg-gradient-to-br from-white/80 to-gray-100/80 dark:from-[#0b1220]/80 dark:to-[#0f1a2b]/80 border-2 border-gray-200 dark:border-white/10 backdrop-blur-sm p-6 md:p-8 shadow-2xl">
 					{/* Gradient overlay */}
 					<div className="absolute inset-0 bg-gradient-to-br from-pink-600/5 to-purple-600/5 rounded-2xl"></div>
 					
@@ -61,13 +61,13 @@ const ContactSection = React.memo(function ContactSection() {
 							<div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-600 to-purple-600 flex items-center justify-center shadow-lg">
 								<MessageSquare className="h-5 w-5 text-white" />
 							</div>
-							<h3 className="text-xl font-bold text-white">Send a message</h3>
+							<h3 className="text-xl font-bold text-gray-900 dark:text-white">Send a message</h3>
 						</div>
 
 						<form onSubmit={handleSubmit} className="space-y-4">
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div className="space-y-2">
-									<label className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+									<label className="text-sm font-semibold text-gray-600 dark:text-gray-300 flex items-center gap-2">
 										<User className="h-4 w-4" />
 										Full Name <span className="text-red-400">*</span>
 									</label>
@@ -76,11 +76,11 @@ const ContactSection = React.memo(function ContactSection() {
 										onChange={(e) => setName(e.target.value)} 
 										required 
 										placeholder="John Doe" 
-										className="w-full px-3 py-2 rounded-xl bg-[#061023]/80 border-2 border-white/10 text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 placeholder:text-gray-500" 
+										className="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#061023]/80 border-2 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 placeholder:text-gray-400 dark:placeholder:text-gray-500" 
 									/>
 								</div>
 								<div className="space-y-2">
-									<label className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+									<label className="text-sm font-semibold text-gray-600 dark:text-gray-300 flex items-center gap-2">
 										<Mail className="h-4 w-4" />
 										Email Address <span className="text-red-400">*</span>
 									</label>
@@ -90,29 +90,29 @@ const ContactSection = React.memo(function ContactSection() {
 										onChange={(e) => setEmail(e.target.value)} 
 										required 
 										placeholder="john@example.com" 
-										className="w-full px-3 py-2 rounded-xl bg-[#061023]/80 border-2 border-white/10 text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 placeholder:text-gray-500" 
+										className="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#061023]/80 border-2 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 placeholder:text-gray-400 dark:placeholder:text-gray-500" 
 									/>
 								</div>
 							</div>
 
 							<div className="space-y-2">
-								<label className="text-sm font-semibold text-gray-300">Subject</label>
+								<label className="text-sm font-semibold text-gray-600 dark:text-gray-300">Subject</label>
 								<input 
 									value={subject} 
 									onChange={(e) => setSubject(e.target.value)} 
 									placeholder="How can we help you?" 
-									className="w-full px-3 py-2 rounded-xl bg-[#061023]/80 border-2 border-white/10 text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 placeholder:text-gray-500" 
+									className="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#061023]/80 border-2 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 placeholder:text-gray-400 dark:placeholder:text-gray-500" 
 								/>
 							</div>
 
 							<div className="space-y-2">
-								<label className="text-sm font-semibold text-gray-300">Message</label>
+								<label className="text-sm font-semibold text-gray-600 dark:text-gray-300">Message</label>
 								<textarea 
 									value={message} 
 									onChange={(e) => setMessage(e.target.value)} 
 									rows={4} 
 									placeholder="Tell us more about your needs..." 
-									className="w-full px-3 py-2 rounded-xl bg-[#061023]/80 border-2 border-white/10 text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 resize-none placeholder:text-gray-500" 
+									className="w-full px-3 py-2 rounded-xl bg-white dark:bg-[#061023]/80 border-2 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white outline-none focus:border-pink-500/50 focus:ring-2 focus:ring-pink-500/20 transition-all duration-300 resize-none placeholder:text-gray-400 dark:placeholder:text-gray-500" 
 								/>
 							</div>
 

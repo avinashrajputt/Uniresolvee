@@ -60,7 +60,7 @@ const features = [
 
 const Features = React.memo(function Features() {
   return (
-    <section id="features" className="w-full text-white bg-gradient-to-b from-[#071026] via-[#0a1435] to-[#071026] py-12 relative overflow-hidden">
+    <section id="features" className="w-full text-gray-900 dark:text-white bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-[#071026] dark:via-[#0a1435] dark:to-[#071026] py-12 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute top-10 right-10 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-10 left-10 w-56 h-56 bg-purple-600/10 rounded-full blur-3xl"></div>
@@ -68,14 +68,14 @@ const Features = React.memo(function Features() {
       <div className="w-full px-6 lg:px-12 relative z-10">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/30 mb-6 backdrop-blur-sm">
-            <Zap className="h-4 w-4 text-indigo-400" />
-            <span className="text-sm font-medium text-indigo-300">Powerful Features</span>
+            <Zap className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+            <span className="text-sm font-medium text-indigo-700 dark:text-indigo-300">Powerful Features</span>
           </div>
           
           <h2 className="text-3xl md:text-4xl lg:text-4xl font-extrabold mb-3">
-            Everything You <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Need</span>
+            Everything You <span className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">Need</span>
           </h2>
-          <p className="text-base text-gray-300 max-w-2xl mx-auto">Comprehensive tools and capabilities to streamline your assessment workflow</p>
+          <p className="text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Comprehensive tools and capabilities to streamline your assessment workflow</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -84,7 +84,7 @@ const Features = React.memo(function Features() {
             return (
               <div 
                 key={f.title} 
-                className="group relative p-6 rounded-2xl bg-gradient-to-br from-[#0b1220]/80 to-[#0f1a2b]/80 border border-white/10 backdrop-blur-sm hover:border-indigo-500/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/20"
+                className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/80 to-gray-100/80 dark:from-[#0b1220]/80 dark:to-[#0f1a2b]/80 border border-gray-200 dark:border-white/10 backdrop-blur-sm hover:border-indigo-500/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/20"
                 style={{ animationDelay: `${idx * 50}ms` }}
               >
                 {/* Gradient overlay on hover */}
@@ -98,9 +98,9 @@ const Features = React.memo(function Features() {
                   </div>
                   <div className="flex-1">
                     <div className="font-bold text-lg mb-2">{f.title}</div>
-                    <div className="text-sm text-gray-400">{f.description}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{f.description}</div>
                   </div>
-                  <div className="mt-4 flex items-center gap-2 text-indigo-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
+                  <div className="mt-4 flex items-center gap-2 text-indigo-600 dark:text-indigo-400 text-sm font-medium group-hover:gap-3 transition-all duration-300">
                     <span>Learn more</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
