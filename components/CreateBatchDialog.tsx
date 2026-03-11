@@ -35,6 +35,7 @@ interface Batch {
   name: string;
   description?: string;
   students: any[];
+  createdAt: string;
   _count: {
     students: number;
     tests: number;
