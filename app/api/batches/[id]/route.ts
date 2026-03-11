@@ -177,15 +177,15 @@ export async function PUT(
     console.error('Error updating batch:', error);
 
     // Handle Prisma unique constraint errors
-    if (error.code === 'P2002') {
-      const target = error.meta?.target;
-      if (target?.includes('regNo')) {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
+      const target = 'meta' in error && error.meta && typeof error.meta === 'object' && 'target' in error.meta ? error.meta.target : null;
+      if (target && Array.isArray(target) && target.includes('regNo')) {
         return NextResponse.json(
           { error: 'A student with this registration number already exists' },
           { status: 400 }
         );
       }
-      if (target?.includes('email')) {
+      if (target && Array.isArray(target) && target.includes('email')) {
         return NextResponse.json(
           { error: 'A student with this email already exists' },
           { status: 400 }
