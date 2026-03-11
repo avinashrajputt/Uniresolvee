@@ -183,12 +183,13 @@ export default function AnswerUploadInterface({
       }
     } catch (error) {
       console.error('Image processing error:', error);
-      setError(`Failed to process images: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(`Failed to process images: ${errorMessage}`);
 
       // Check if it's a processing error with suggestion
       if (
-        error.message.includes('AI service unable') ||
-        error.message.includes('image quality')
+        errorMessage.includes('AI service unable') ||
+        errorMessage.includes('image quality')
       ) {
         setSuggestion(
           'Try these tips: 1) Ensure good lighting, 2) Keep camera steady, 3) Make sure text is clear and readable, 4) Upload one page at a time if multiple pages fail'

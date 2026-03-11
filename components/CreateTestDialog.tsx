@@ -168,7 +168,8 @@ export function CreateTestDialog({
       }
     } catch (error) {
       console.error('Error processing image:', error);
-      setError(`Failed to process image: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(`Failed to process image: ${errorMessage}`);
     } finally {
       setImageUploading(false);
     }

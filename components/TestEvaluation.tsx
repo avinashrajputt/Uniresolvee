@@ -187,7 +187,8 @@ export default function TestEvaluation({
       }
     } catch (error) {
       console.error('Error saving grades:', error);
-      setError(`Failed to save grades: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(`Failed to save grades: ${errorMessage}`);
     } finally {
       setSaving(false);
     }
@@ -216,7 +217,8 @@ export default function TestEvaluation({
       }
     } catch (error) {
       console.error('Auto-grading error:', error);
-      setError(`Auto-grading failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(`Auto-grading failed: ${errorMessage}`);
     } finally {
       setAutoGrading(false);
     }
