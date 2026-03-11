@@ -156,15 +156,16 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error creating test:', error);
 
-    if (error.code === 'P2002') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
       return NextResponse.json(
         { error: 'A test with this name already exists' },
         { status: 400 }
       );
     }
 
+    const errorMessage = error && typeof error === 'object' && 'message' in error && typeof error.message === 'string' ? error.message : 'Failed to create test';
     return NextResponse.json(
-      { error: error.message || 'Failed to create test' },
+      { error: errorMessage },
       { status: 500 }
     );
   }
